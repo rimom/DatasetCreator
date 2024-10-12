@@ -37,17 +37,17 @@
                 <label class="form-label">Weight:</label>
                 <input type="number" class="form-control" name="weight" value="{{ pair.weight }}" min="0" max="1" required>
             </div>
-            <button type="button" class="btn btn-danger remove-pair">Remove</button>
+            <button type="button" class="btn btn-danger remove-pair"><i class="bi bi-x-circle"></i> Remove</button>
         </div>
         {% endfor %}
     </div>
 
     <!-- Add Message Pair Button -->
-    <button type="button" class="btn btn-secondary mb-3" id="add-pair">+ Add Message Pair</button>
+    <button type="button" class="btn btn-secondary mb-3" id="add-pair"><i class="bi bi-plus-circle"></i> Add Message Pair</button>
 
     <!-- Action Buttons -->
     <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Update Conversation</button>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Update Conversation</button>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
     </div>
 </form>

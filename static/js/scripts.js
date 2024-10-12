@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label class="form-label">Weight:</label>
                     <input type="number" class="form-control" name="weight" value="1" min="0" max="1" required>
                 </div>
-                <button type="button" class="btn btn-danger remove-pair">Remove</button>
+                <button type="button" class="btn btn-danger remove-pair"><i class="bi bi-x-circle"></i> Remove</button>
             </div>
         `;
         messagePairsDiv.insertAdjacentHTML('beforeend', pairHTML);

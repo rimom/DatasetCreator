@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Fine-Tuning Dataset Creator</h1>
+
+<form method="POST" action="{{ url_for('index') }}">
+    <!-- System Message -->
+    <div class="mb-3">
+        <label for="system_message" class="form-label">System Message:</label>
+        <textarea class="form-control" id="system_message" name="system_message" rows="3">{{ system_message }}</textarea>
+    </div>
+
+    <!-- Persist Checkbox -->
+    <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="persist" name="persist" {% if persist %}checked{% endif %}>
+        <label class="form-check-label" for="persist">
+            Persist this message
+        </label>
+    </div>
+
+    <hr>
+
+    <!-- Message Pairs -->
+    <h4>Message Pairs</h4>
+    <div id="message-pairs">
+        <div class="message-pair mb-4">
+            <div class="mb-2">
+                <label class="form-label">User Message:</label>
+                <textarea class="form-control" name="user_message" rows="3" required></textarea>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Assistant Message:</label>
+                <textarea class="form-control" name="assistant_message" rows="3" required></textarea>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">Weight:</label>
+                <input type="number" class="form-control" name="weight" value="1" min="0" max="1" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Message Pair Button -->
+    <button type="button" class="btn btn-secondary mb-3" id="add-pair">+ Add Message Pair</button>
+
+    <!-- Action Buttons -->
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Save Conversation</button>
+    </div>
+</form>
+
+<hr>
+
+<!-- Dataset Content -->
+<h3>Dataset Content:</h3>
+<ul class="list-group">
+    {% for conv in conversations %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ loop.index }}:</strong> {{ conv | tojson }}
+            </div>
+            <div>
+                <a href="{{ url_for('edit', conv_id=loop.index0) }}" class="btn btn-sm btn-warning">Edit</a>
+            </div>
+        </li>
+    {% else %}
+        <li class="list-group-item">No conversations added yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

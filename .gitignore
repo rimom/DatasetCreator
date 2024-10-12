@@ -1,0 +1,13 @@
+*
+!static/
+!static/css/
+!static/css/styles.css
+!static/js/
+!static/js/scripts.js
+!templates/
+!templates/base.html
+!templates/index.html
+!templates/edit.html
+!.gitignore
+!app.py
+!requirements.txt

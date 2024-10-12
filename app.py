@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash, session
 import json
 import os
-from io import StringIO
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'your_secure_secret_key'  # Replace with a secure key
 
-# Path to store conversations persistently
-DATA_FILE = 'conversations.json'
+# Path to store conversations persistently as JSONL
+DATA_FILE = 'conversations.jsonl'
 
 # In-memory storage
 conversations = []
@@ -30,7 +30,7 @@ def save_conversations():
         with open(DATA_FILE, 'w', encoding='utf-8') as f:
             for conv in conversations:
                 json.dump(conv, f, ensure_ascii=False)
-                f.write('\n')
+                f.write('\n')  # Ensure each conversation is on a new line (JSONL format)
     except Exception as e:
         print(f"Error saving conversations: {e}")
 
@@ -95,15 +95,16 @@ def export():
         flash("No conversations to export.", "warning")
         return redirect(url_for('index'))
     
-    # Create a virtual file
-    si = StringIO()
+    # Create a virtual binary file for JSONL
+    si = ""
     for conv in conversations:
-        json.dump(conv, si, ensure_ascii=False)
-        si.write('\n')
-    si.seek(0)
+        si += json.dumps(conv, ensure_ascii=False) + '\n'
+    
+    bytes_io = BytesIO(si.encode('utf-8'))
+    bytes_io.seek(0)
     
     return send_file(
-        si,
+        bytes_io,
         mimetype='application/json',
         as_attachment=True,
         download_name='dataset.jsonl'

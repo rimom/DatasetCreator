@@ -41,7 +41,7 @@ load_conversations()
 def index():
     global conversations
     if request.method == 'POST':
-        # Handle form submission to add/save a conversation
+        # Handle form submission to add a conversation
         data = request.form
         system_message = data.get('system_message', 'You are a helpful assistant.').strip()
         persist = data.get('persist', 'off') == 'on'
@@ -200,6 +200,22 @@ def edit(conv_id):
         session['system_message'] = "You are a helpful assistant."
     
     return render_template('edit.html', conv_id=conv_id, system_message=system_message, message_pairs=message_pairs, persist=persist)
+
+@app.route('/delete/<int:conv_id>', methods=['POST'])
+def delete(conv_id):
+    global conversations
+    if conv_id < 0 or conv_id >= len(conversations):
+        flash("Invalid conversation ID.", "danger")
+        return redirect(url_for('index'))
+    
+    # Remove the conversation
+    del conversations[conv_id]
+    flash(f"Conversation {conv_id + 1} has been deleted.", "success")
+    
+    # Save to file
+    save_conversations()
+    
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)

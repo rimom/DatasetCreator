@@ -27,11 +27,11 @@
         <div class="message-pair mb-4">
             <div class="mb-2">
                 <label class="form-label">User Message:</label>
-                <textarea class="form-control" name="user_message" rows="3" required>{{ pair.user_message }}</textarea>
+                <textarea class="form-control user-message" name="user_message" rows="3" required {% if loop.first %}autofocus{% endif %}>{{ pair.user_message }}</textarea>
             </div>
             <div class="mb-2">
                 <label class="form-label">Assistant Message:</label>
-                <textarea class="form-control" name="assistant_message" rows="3" required>{{ pair.assistant_message }}</textarea>
+                <textarea class="form-control assistant-message" name="assistant_message" rows="3" required>{{ pair.assistant_message }}</textarea>
             </div>
             <div class="mb-2">
                 <label class="form-label">Weight:</label>

@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Fine-Tuning Dataset Creator</h1>
+<h1>Dataset Creator</h1>
 
 <form method="POST" action="{{ url_for('index') }}">
-    <!-- System Message -->
     <div class="mb-3">
         <label for="system_message" class="form-label">System Message:</label>
         <textarea class="form-control" id="system_message" name="system_message" rows="3">{{ system_message }}</textarea>
     </div>
 
-    <!-- Persist Checkbox -->
     <div class="form-check mb-3">
         <input class="form-check-input" type="checkbox" id="persist" name="persist" {% if persist %}checked{% endif %}>
         <label class="form-check-label" for="persist">
@@ -20,7 +18,6 @@
 
     <hr>
 
-    <!-- Message Pairs -->
     <h4>Message Pairs</h4>
     <div id="message-pairs">
         <div class="message-pair mb-4">
@@ -39,10 +36,8 @@
         </div>
     </div>
 
-    <!-- Add Message Pair Button -->
     <button type="button" class="btn btn-secondary mb-3" id="add-pair"><i class="bi bi-plus-circle"></i> Add Message Pair</button>
 
-    <!-- Action Buttons -->
     <div class="mb-3">
         <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Conversation</button>
     </div>
@@ -50,7 +45,6 @@
 
 <hr>
 
-<!-- Dataset Content -->
 <h3>Dataset Content:</h3>
 <ul class="list-group">
     {% for conv in conversations %}
@@ -59,11 +53,9 @@
                 <strong>{{ loop.index }}:</strong> {{ conv | tojson }}
             </div>
             <div>
-                <!-- Delete Button -->
                 <form method="POST" action="{{ url_for('delete', conv_id=loop.index0) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this conversation?');">
                     <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</button>
                 </form>
-                <!-- Edit Button -->
                 <a href="{{ url_for('edit', conv_id=loop.index0) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i> Edit</a>
             </div>
         </li>

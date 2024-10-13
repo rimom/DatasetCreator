@@ -29,9 +29,9 @@
                 <label class="form-label">Assistant Message:</label>
                 <textarea class="form-control assistant-message" name="assistant_message" rows="3" required></textarea>
             </div>
-            <div class="mb-2">
-                <label class="form-label">Weight:</label>
-                <input type="number" class="form-control" name="weight" value="1" min="0" max="1" required>
+            <div class="mb-2 form-check">
+                <input type="checkbox" class="form-check-input" name="weight_0" id="weight-0" checked>
+                <label class="form-check-label" for="weight-0">Weight</label>
             </div>
         </div>
     </div>
@@ -48,12 +48,12 @@
 <h3>Dataset Content:</h3>
 <ul class="list-group">
     {% for conv in conversations %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
+        <li class="list-group-item d-flex align-items-start">
+            <div class="conversation-text flex-grow-1 me-3">
                 <strong>{{ loop.index }}:</strong> {{ conv | tojson }}
             </div>
-            <div>
-                <form method="POST" action="{{ url_for('delete', conv_id=loop.index0) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this conversation?');">
+            <div class="buttons">
+                <form method="POST" action="{{ url_for('delete', conv_id=loop.index0) }}" onsubmit="return confirm('Are you sure you want to delete this conversation?');" class="me-2">
                     <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</button>
                 </form>
                 <a href="{{ url_for('edit', conv_id=loop.index0) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i> Edit</a>

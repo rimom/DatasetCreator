@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const addPairButton = document.getElementById('add-pair');
     const messagePairsDiv = document.getElementById('message-pairs');
 
+    let pairCount = document.querySelectorAll('.message-pair').length;
+
     addPairButton.addEventListener('click', function() {
         const pairHTML = `
             <div class="message-pair mb-4">
@@ -13,20 +15,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label class="form-label">Assistant Message:</label>
                     <textarea class="form-control assistant-message" name="assistant_message" rows="3" required></textarea>
                 </div>
-                <div class="mb-2">
-                    <label class="form-label">Weight:</label>
-                    <input type="number" class="form-control" name="weight" value="1" min="0" max="1" required>
+                <div class="mb-2 form-check">
+                    <input type="checkbox" class="form-check-input" name="weight_${pairCount}" id="weight-${pairCount}" checked>
+                    <label class="form-check-label" for="weight-${pairCount}">Include Weight</label>
                 </div>
                 <button type="button" class="btn btn-danger remove-pair"><i class="bi bi-x-circle"></i> Remove</button>
             </div>
         `;
         messagePairsDiv.insertAdjacentHTML('beforeend', pairHTML);
+        pairCount++;
     });
 
     // Event delegation for removing message pairs
     messagePairsDiv.addEventListener('click', function(e) {
         if (e.target && e.target.classList.contains('remove-pair')) {
             e.target.parentElement.remove();
+        } else if (e.target && e.target.parentElement.classList.contains('remove-pair')) {
+            e.target.parentElement.parentElement.remove();
         }
     });
 

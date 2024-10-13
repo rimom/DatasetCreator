@@ -21,7 +21,8 @@ For more information on preparing your dataset for fine-tuning, please refer to 
 
 You can download the app here:
 
-- [DatasetCreator-MACOS.zip](./DatasetCreator-MACOS.zip)
+- [Download DatasetCreator-MACOS.zip](https://github.com/rimom/DatasetCreator/releases/latest/download/DatasetCreator-MACOS.zip)
+
 
 *Note: Currently, the app is available for macOS. Support for other operating systems may be added in the future.*
 

@@ -78,3 +78,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function exportJSONL() {
+    if (window.pywebview) {
+        // We are in pywebview
+        window.pywebview.api.export_jsonl().then(function(response) {
+            if (response.success) {
+                alert(response.message);
+            } else {
+                alert('Error: ' + response.message);
+            }
+        });
+    } else {
+        // We are in a web browser
+        window.location.href = '/export';
+    }
+}
+

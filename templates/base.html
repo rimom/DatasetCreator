@@ -22,7 +22,9 @@
               </ul>
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('export') }}"><i class="bi bi-download"></i> Export JSONL</a>
+                  <!-- <a class="nav-link" href="{{ url_for('export') }}"><i class="bi bi-download"></i> Export JSONL</a> -->
+                  <a class="nav-link" href="#" onclick="exportJSONL(); return false;"><i class="bi bi-download"></i> Export JSONL</a>
+
                 </li>
                 <li class="nav-item">
                   <form method="POST" action="{{ url_for('clear') }}" class="d-inline">

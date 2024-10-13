@@ -1,13 +1,36 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file, flash, session
-import json
 import os
+import sys
+import json
+from flask import Flask, render_template, request, redirect, url_for, send_file, flash, session
 from io import BytesIO
+import threading
+import webview
 
 app = Flask(__name__)
 app.secret_key = 'your_secure_secret_key'
 
-# Path to store conversations persistently as JSONL
-DATA_FILE = 'conversations.jsonl'
+def get_data_dir():
+    """Return the appropriate directory for storing user data."""
+    if getattr(sys, 'frozen', False):
+        # The application is frozen (packaged)
+        if sys.platform == "darwin":
+            # macOS
+            return os.path.expanduser('~/Library/Application Support/DatasetCreator')
+        elif sys.platform.startswith('win'):
+            # Windows
+            return os.path.join(os.environ['APPDATA'], 'DatasetCreator')
+        else:
+            # Linux and other Unix-like systems
+            return os.path.expanduser('~/.DatasetCreator')
+    else:
+        # The application is running in a normal Python environment
+        return os.path.dirname(os.path.abspath(__file__))
+
+DATA_DIR = get_data_dir()
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR)
+
+DATA_FILE = os.path.join(DATA_DIR, 'conversations.jsonl')
 
 conversations = []
 
@@ -33,6 +56,7 @@ def save_conversations():
     except Exception as e:
         print(f"Error saving conversations: {e}")
 
+# Load conversations on app start
 load_conversations()
 
 @app.route('/', methods=['GET', 'POST'])
@@ -232,5 +256,56 @@ def delete(conv_id):
 
     return redirect(url_for('index'))
 
+class API:
+    def export_jsonl(self):
+        if not conversations:
+            return {'success': False, 'message': 'No conversations to export.'}
+
+        # Create the JSONL content
+        vbf = ""
+        for conv in conversations:
+            vbf += json.dumps(conv, ensure_ascii=False) + '\n'
+
+        # Open a save file dialog
+        save_path = webview.windows[0].create_file_dialog(
+            webview.SAVE_DIALOG,
+            save_filename='dataset.jsonl'
+        )
+
+        print(f"save_path: {save_path}")  # Debugging line to check the value of save_path
+
+        if save_path:
+            try:
+                # Check if save_path is a directory
+                if os.path.isdir(save_path):
+                    return {'success': False, 'message': 'Cannot save to a directory. Please select a file.'}
+
+                # Use save_path directly, no need to index [0]
+                with open(save_path, 'w', encoding='utf-8') as f:
+                    f.write(vbf)
+
+                return {'success': True, 'message': f'File saved successfully at {save_path}.'}
+            except Exception as e:
+                return {'success': False, 'message': f'Error saving file: {str(e)}'}
+        else:
+            return {'success': False, 'message': 'Save canceled.'}
+
+
+
+def run_app():
+    app.run(port=5005, use_reloader=False)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    if getattr(sys, 'frozen', False):
+        # We are running in a packaged app
+        flask_thread = threading.Thread(target=run_app)
+        flask_thread.daemon = True
+        flask_thread.start()
+        # Create an instance of the API class
+        api = API()
+        # Open the pywebview window with the API
+        window = webview.create_window('Dataset Creator', 'http://127.0.0.1:5005', width=1200, height=1200, resizable=True, js_api=api)
+        webview.start()
+    else:
+        # We are running directly with python app.py
+        app.run(port=5000)

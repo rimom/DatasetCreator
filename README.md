@@ -21,15 +21,16 @@ For more information on preparing your dataset for fine-tuning, please refer to 
 
 You can download the app here:
 
-- [DatasetCreator.app](./DatasetCreator.app)
+- [DatasetCreator-MACOS.zip](./DatasetCreator-MACOS.zip)
 
 *Note: Currently, the app is available for macOS. Support for other operating systems may be added in the future.*
 
 ## Installation
 
-1. **Download the App**: Click the link above to download `DatasetCreator.app`.
-2. **Move to Applications Folder** (Optional): Drag and drop the app into your Applications folder for easy access.
-3. **Security Permissions**:
+1. **Download the App**: Click the link above to download `DatasetCreator-MACOS.zip`.
+2. **Unzip the File**: Extract `DatasetCreator.app` from the ZIP file.
+3. **Move to Applications Folder** (Optional): Drag and drop `DatasetCreator.app` into your Applications folder for easy access.
+4. **Security Permissions**:
    - Since the app is not signed by an identified developer, you might encounter a security warning.
    - To bypass this, right-click on `DatasetCreator.app` and select **Open**.
    - In the dialog that appears, click **Open** again to confirm.
@@ -38,9 +39,9 @@ You can download the app here:
 
 1. **Launch the App**: Double-click on `DatasetCreator.app` to open it.
 2. **Create Conversations**:
-   - Click on **Add Message Pair** to create a new user-assistant exchange.
-   - Enter the **User Message** and the corresponding **Assistant Response**.
-   - Repeat to add multiple exchanges.
+   - By default, the app provides a single pair of user-assistant messages.
+   - Enter your **User Message** and the corresponding **Assistant Response** in the provided fields.
+   - If you want to create **multi-turn conversations** (conversations with multiple user and assistant messages), click **Add Message Pair** to add more turns.
 3. **Edit Conversations**:
    - Click the **Edit** button next to a conversation to modify it.
    - Make your changes and save.
@@ -50,6 +51,11 @@ You can download the app here:
 5. **Prepare for Fine-Tuning**:
    - Use the exported `dataset.jsonl` file as input for fine-tuning your OpenAI model.
    - Follow the guidelines provided by OpenAI to proceed with fine-tuning.
+
+## Clarifications on Usage
+
+- **Single-turn conversations**: You can add a single user message and a single assistant response without using the **Add Message Pair** button.
+- **Multi-turn conversations**: If your dataset requires multiple exchanges between the user and assistant (for example, a dialogue with back-and-forth responses), click the **Add Message Pair** button to add as many turns as needed.
 
 ## Screenshots
 
@@ -85,4 +91,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 **Disclaimer**: This app is an independent project and is not officially affiliated with OpenAI.
-

@@ -4,13 +4,11 @@
 <h1>Edit Conversation {{ conv_id + 1 }}</h1>
 
 <form method="POST" action="{{ url_for('edit', conv_id=conv_id) }}">
-    <!-- System Message -->
     <div class="mb-3">
         <label for="system_message" class="form-label">System Message:</label>
         <textarea class="form-control" id="system_message" name="system_message" rows="3">{{ system_message }}</textarea>
     </div>
 
-    <!-- Persist Checkbox -->
     <div class="form-check mb-3">
         <input class="form-check-input" type="checkbox" id="persist" name="persist" {% if persist %}checked{% endif %}>
         <label class="form-check-label" for="persist">
@@ -20,7 +18,6 @@
 
     <hr>
 
-    <!-- Message Pairs -->
     <h4>Message Pairs</h4>
     <div id="message-pairs">
         {% for pair in message_pairs %}
@@ -42,10 +39,8 @@
         {% endfor %}
     </div>
 
-    <!-- Add Message Pair Button -->
     <button type="button" class="btn btn-secondary mb-3" id="add-pair"><i class="bi bi-plus-circle"></i> Add Message Pair</button>
 
-    <!-- Action Buttons -->
     <div class="mb-3">
         <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Update Conversation</button>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>

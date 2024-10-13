@@ -4,12 +4,11 @@ import os
 from io import BytesIO
 
 app = Flask(__name__)
-app.secret_key = 'your_secure_secret_key'  # Replace with a secure key
+app.secret_key = 'your_secure_secret_key'
 
 # Path to store conversations persistently as JSONL
 DATA_FILE = 'conversations.jsonl'
 
-# In-memory storage
 conversations = []
 
 def load_conversations():
@@ -34,7 +33,6 @@ def save_conversations():
     except Exception as e:
         print(f"Error saving conversations: {e}")
 
-# Load conversations at startup
 load_conversations()
 
 @app.route('/', methods=['GET', 'POST'])
@@ -96,11 +94,11 @@ def export():
         return redirect(url_for('index'))
     
     # Create a virtual binary file for JSONL
-    si = ""
+    vbf = ""
     for conv in conversations:
-        si += json.dumps(conv, ensure_ascii=False) + '\n'
+        vbf += json.dumps(conv, ensure_ascii=False) + '\n'
     
-    bytes_io = BytesIO(si.encode('utf-8'))
+    bytes_io = BytesIO(vbf.encode('utf-8'))
     bytes_io.seek(0)
     
     return send_file(
